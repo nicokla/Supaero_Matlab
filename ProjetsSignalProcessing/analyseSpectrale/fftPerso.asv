@@ -1,0 +1,17 @@
+function [Sabs, Sangle, SabsInteresting, SangleInteresting] = fftPerso( s,T_e )
+if nargin==2
+	T_0 = 1.0;
+	q_max = 150;
+	alpha = 0.99;
+	beta = 1.0;
+end
+
+N=length(s);
+[~, ~, ~, ~, indicesNonNegative] = paramFourier( T_e, N );
+S = fftshift(fft(s))/N;
+Sabs = abs(S);
+Sangle = angle(S);
+SabsInteresting = 2*Sabs(indicesNonNegative);
+SangleInteresting = Sangle(indicesNonNegative);
+end
+

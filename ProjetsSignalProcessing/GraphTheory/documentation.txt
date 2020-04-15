@@ -1,0 +1,89 @@
+------------------------------------
+Summary of GAIMC functions in Matlab
+------------------------------------
+
+Load a graph as a sparse adjacency matrix: load_gaimc_graph('file.mat')
+or A = load('file.dat') ; A = spconvert(A)
+
+Format of file.dat (weight=0: no edge, all weights=0/1: unweighted graph):
+node1 node2 weight
+...
+
+Draw a graph: graph_draw(matrix,xycoords,'labels',labels)
+or gplot(matrix,xycoords)
+
+Depth-First Search: distance_vec = dfs(matrix, node)
+
+Breath-First Search: [distance_vec discovery_time_vec] = bfs(matrix, node)
+
+Shortest path: [distance_vec predecessor_vec] = dijkstra(matrix, node)
+
+Minimum spanning tree: tree_mat = mst_prim(sym_matrix);
+
+Strongly Connected Components: component_vec = scomponents(matrix)
+and connected Components for undirected case: component_vec = scomponents(matrix | matrix')
+
+Largest connected component: [component_mat, filter] = largest_component(matrix)
+
+Node degrees: degrees_vec = sum(matrix, 2)
+
+Converts the adjacency matrix into a set of compressed sparse row arrays (adjacency list): As = convert_sparse(A)
+The new matrix can be used in the previous functions, avoiding repeated internal conversions done at each function call.
+
+Maximum weight bipartite matching: [value leftnode_vec rightnode_vec] = bipartite_matching(matrix)
+with a sparse matrix of directed edges (from left source nodes to right target nodes)
+
+E.g. perfect matching on a simple 6x6 example
+couplage.dat
+1 1 1
+1 2 1
+1 4 1
+2 2 1
+2 6 1
+3 2 1
+4 3 1
+4 5 1
+4 6 1
+5 3 1
+5 4 1
+5 5 1
+5 6 1
+6 2 1
+6 5 1
+
+A = load('couplage.dat') ; A = spconvert(A) ; [val m1 m2]=bipartite_matching(A)
+
+val =
+
+     6
+
+
+m1 =
+
+     1
+     2
+     3
+     4
+     5
+     6
+
+
+m2 =
+
+     1
+     6
+     2
+     3
+     4
+     5
+
+
+-------------------------------------
+Summary of maxflow function in Matlab
+-------------------------------------
+
+Max-flow/min-cut algorithm: [flow, labels] = maxflow(spgraph, terminals)
+with spgraph, a sparse matrix of size nxn where spgraph(i,j)=capacity(i,j)
+and terminals, a sparse matrix of size nx2 where terminals(i,1)=capacity(source,i) and terminals(i,2)=capacity(i,sink)
+results are flow - the calculated maximum flow value, and labels - a vector of size n where labels(i) is 0 or 1 if node i belongs to source or sink respectively.
+
